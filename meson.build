@@ -1,6 +1,6 @@
 project('rsa_tool', 'c',
   version : '0.1',
-  default_options : ['warning_level=3', 'c_std=c11'])
+  default_options : ['warning_level=3', 'werror=true', 'c_std=c99'])
 
 inc_dir = include_directories('include')
 
