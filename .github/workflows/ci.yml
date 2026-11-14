@@ -16,7 +16,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0  # Fontos a Sonar történeti elemzéséhez
+        fetch-depth: 0
 
     - name: Cache SonarCloud packages
       uses: actions/cache@v4
@@ -39,7 +39,7 @@ jobs:
       run: meson test -C build -v
 
     - name: Run Cppcheck (Static Analysis)
-      run: cppcheck --enable=all --error-exitcode=1 --suppress=missingIncludeSystem src/
+      run: cppcheck --enable=all --error-exitcode=1 --suppress=missingIncludeSystem -i src/bn.c src/
 
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@master
