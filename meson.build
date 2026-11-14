@@ -5,7 +5,8 @@ project('rsa_tool', 'c',
 inc_dir = include_directories('include')
 
 sources = [
-  'src/main.c'
+  'src/main.c',
+  'src/bn.c'
 ]
 
 executable('rsa_tool',
