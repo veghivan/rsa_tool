@@ -39,7 +39,7 @@ jobs:
       run: meson test -C build -v
 
     - name: Run Cppcheck (Static Analysis)
-      run: cppcheck --enable=all --error-exitcode=1 --suppress=missingIncludeSystem -i src/bn.c src/
+      run: cppcheck --enable=all --error-exitcode=1 --suppress=missingIncludeSystem --suppress=unmatchedSuppression --suppress=normalCheckLevelMaxBranches --suppress=*:include/debugmalloc.h -I include -i src/bn.c src/
 
     - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@master
