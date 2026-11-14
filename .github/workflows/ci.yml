@@ -13,6 +13,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
 
     - name: Install dependencies
       run: |
@@ -27,6 +29,12 @@ jobs:
     - name: Run Tests
       run: meson test -C build -v
 
-    - name: Run Cppcheck (Static Analysis)
+    - name: Run Cppcheck
       run: cppcheck --enable=all --error-exitcode=1 --suppress=missingIncludeSystem src/
+
+    - name: Run SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
