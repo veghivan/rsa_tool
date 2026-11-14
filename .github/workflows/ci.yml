@@ -4,17 +4,26 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
+    types: [opened, synchronize, reopened]
     branches: [ "main" ]
 
 jobs:
   build:
+    name: Build and Analyze
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0
+        fetch-depth: 0  # Fontos a Sonar történeti elemzéséhez
+
+    - name: Cache SonarCloud packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
 
     - name: Install dependencies
       run: |
@@ -29,10 +38,10 @@ jobs:
     - name: Run Tests
       run: meson test -C build -v
 
-    - name: Run Cppcheck
+    - name: Run Cppcheck (Static Analysis)
       run: cppcheck --enable=all --error-exitcode=1 --suppress=missingIncludeSystem src/
 
-    - name: Run SonarCloud Scan
+    - name: SonarCloud Scan
       uses: SonarSource/sonarcloud-github-action@master
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
