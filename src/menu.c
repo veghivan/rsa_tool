@@ -26,31 +26,35 @@ void run_interactive_menu(void) {
         }
 
         switch (valasztas) {
-            case 1: { 
+            case 1: {
                 printf("\n-> [Keszul] Kulcsgeneralas...\n");
                 
-                int bit_length = 0;
-                printf("Add meg a bitmeretet (vagy 0 az alapertelmezett 1024-hez): ");
+                int bit_length = 1024; // Az alapértelmezett érték előre beállítva
+                char buffer[32];
+
+                printf("Add meg a bitmeretet [Alapertelmezett: 1024]: ");
                 
-                if (scanf("%d", &bit_length) != 1) {
-                    int c; while ((c = getchar()) != '\n' && c != EOF);
-                    printf("[Hiba] Szamot kerek! Visszateres a fomenube...\n");
-                    break; 
-                }
-                
-                if (bit_length <= 0) {
-                    bit_length = 1024; // Alapértelmezett érték
+                // A főmenü scanf("%d") hívása bent hagyta az Entert (\n) a bemeneti pufferben.
+                // Ezt ki kell ürítenünk, mielőtt a sorolvasó fgets-t meghívjuk.
+                int c; while ((c = getchar()) != '\n' && c != EOF);
+
+                if (fgets(buffer, sizeof(buffer), stdin) != NULL) {
+                    // Ha az első karakter nem Enter (\n), akkor a felhasználó írt be valamit
+                    if (buffer[0] != '\n') {
+                        if (sscanf(buffer, "%d", &bit_length) != 1 || bit_length <= 0) {
+                            printf("[Hiba] Ervenytelen szam! Visszateres a fomenube...\n");
+                            break;
+                        }
+                    }
                 }
 
                 rsa_keypair *keys = NULL;
                 
-                // Itt jön a dupla indirekció élesben: átadjuk a pointer memóriacímét (&keys)
                 if (generate_rsa_keypair(bit_length, &keys)) {
                     printf("[Siker] %d bites RSA kulcspar lefoglalva a memoriaban!\n", keys->bit_length);
                     
                     // TODO: Fájlnevek bekérése és kimentés a file_io modullal
                     
-                    // Használat után azonnal felszabadítjuk
                     free_rsa_keypair(keys);
                     printf("[Kesz] Memoria biztonsagosan felszabaditva.\n");
                 } else {
