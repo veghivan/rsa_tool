@@ -11,11 +11,13 @@ void run_interactive_menu(void) {
     int valasztas;
 
     while (fut) {
-        printf("\n=== RSA Titkosito Rendszer ===\n");
+        printf("\n=== RSA Titkosito Rendszer ===\n\n");
+
         printf("1. Uj kulcspar generalasa\n");
         printf("2. Fajl titkositasa\n");
         printf("3. Fajl visszafejtese\n");
-        printf("4. Kilepes\n");
+        printf("4. Kilepes\n\n");
+        
         printf("Valassz egy funkciot: ");
 
         if (scanf("%d", &valasztas) != 1) {
