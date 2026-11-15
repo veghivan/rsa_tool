@@ -6,7 +6,8 @@ inc_dir = include_directories('include')
 
 sources = [
   'src/main.c',
-  'src/bn.c'
+  'src/bn.c',
+  'src/menu.c'
 ]
 
 executable('rsa_tool',
