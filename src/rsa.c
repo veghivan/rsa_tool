@@ -23,7 +23,6 @@ bool generate_rsa_keypair(int bit_length, rsa_keypair **out_keypair) {
 }
 
 void free_rsa_keypair(rsa_keypair *keypair) {
-    // A free hívása előtt érdemes ellenőrizni a NULL pointert
     if (keypair != NULL) {
         free(keypair);
     }
